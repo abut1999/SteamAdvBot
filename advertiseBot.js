@@ -1,10 +1,9 @@
-const bumpingDiscussionsPostsModule = require('./bumpingPostsInDiscussions.js')
+const checkingDiscussionsPostsModule = require('./checkingPostsInDiscussions.js')
 const postingGroupCommentModule = require ('./checkingGroupsComments.js')
 
 async function main() {
-  //bumpingDiscussionsPostsModule.getGlobalForumDiscussion();
-  //bumpingDiscussionsPostsModule.bumpInGerysDiscussion();
-  postingGroupCommentModule.groupCommentsChecker(); 
+  //postingGroupCommentModule.groupCommentsChecker(); 
+  checkingDiscussionsPostsModule.recentDiscussionsChecker();
 }
 
 main();

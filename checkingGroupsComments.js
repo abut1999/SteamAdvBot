@@ -4,6 +4,17 @@ require('dotenv').config();
 
 const postingGroupCommentModule = {};
 
+function requestHeader(requestUri) {
+  const requestHeader = {
+    method: 'GET',
+    uri: requestUri,
+    headers: {
+      Cookie: process.env.CONN_STRING
+    }
+  }
+  return requestHeader;
+}
+
 function checkingGroupComments(requestedHTML) {
   const $ = cheerio.load(requestedHTML);
   const recentCommentsAuthors = [];
@@ -14,17 +25,6 @@ function checkingGroupComments(requestedHTML) {
   });
   console.log(recentCommentsAuthors)
   return recentCommentsAuthors;
-}
-
-function requestHeader(requestUri) {
-  const requestHeader = {
-    method: 'GET',
-    uri: requestUri,
-    headers: {
-      Cookie: process.env.CONN_STRING
-    }
-  }
-  return requestHeader;
 }
 
 async function requestRecentComments(targetUri) {
