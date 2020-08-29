@@ -1,9 +1,12 @@
-const checkingDiscussionsPostsModule = require('./checkingPostsInDiscussions.js')
-const postingGroupCommentModule = require ('./checkingGroupsComments.js')
+const checkingDiscussionsPostsModule = require('./checkingPostsInDiscussions')
+const checkingGroupCommentsModule = require ('./checkingGroupsComments')
 
 async function main() {
-  //postingGroupCommentModule.groupCommentsChecker(); 
+  checkingGroupCommentsModule.groupCommentsChecker();
   checkingDiscussionsPostsModule.recentDiscussionsChecker();
+  setInterval(function(){
+  main();
+}, 720000)
 }
 
 main();

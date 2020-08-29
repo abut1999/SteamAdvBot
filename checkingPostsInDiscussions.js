@@ -1,45 +1,40 @@
 const request = require('request-promise');
 const cheerio = require('cheerio');
 require('dotenv').config();
+const bumpingPostsModule = require('./bumpingDiscussionsPosts');
 
 const checkingDiscussionsPostsModule = {};
 
-//Global reusable header for each request
-function requestHeader(requestUri) {
+function checkingMyDiscussionPosition(requestedHTML, myDiscussionID) {
+  const $ = cheerio.load(requestedHTML);
+  const attemptedSelectUri = $(`#${myDiscussionID} > a`).attr('href');
+  return attemptedSelectUri;
+}
+
+async function requestRecentDiscussions(targetUri, bumpingUri, featureID, myDiscussionID) {
   const requestHeader = {
     method: 'GET',
-    uri: requestUri,
+    uri: targetUri,
     headers: {
       Cookie: process.env.CONN_STRING
     }
   }
-  return requestHeader;
-}
-
-//Check if our discussion id can be grabbed in top discussions
-function checkingMyDiscussionPosition(requestedHTML) {
-  const $ = cheerio.load(requestedHTML);
-  const attemptedSelectUri = $('#forum_General_32912287_3960307437826307489 > a').attr('href');
-  //Returns either our id or undefined
-  return attemptedSelectUri;
-}
-
-//Call global functions to initiate requests
-async function requestRecentDiscussions(targetUri, bumpingUri) {
-  //Request targeted group recent discussions
-  const recentDiscussionsHTML = await request(requestHeader(targetUri));
-  //Receive the return of checking outcome (id or undefined)
-  const checkingOutcome = checkingMyDiscussionPosition(recentDiscussionsHTML)
-  //Call the bumping module if returned undefined, else do nothing
+  const recentDiscussionsHTML = await request(requestHeader);
+  const checkingOutcome = checkingMyDiscussionPosition(recentDiscussionsHTML, myDiscussionID)
   if (checkingOutcome === undefined) {
-    console.log('export bumping module');
-  } else {
-    console.log('Already in top discussions')
+    bumpingPostsModule.initiateBumpingPosts(bumpingUri, featureID)
   }
+  await new Promise(resolve => setTimeout(resolve, 14000));
 }
 
 checkingDiscussionsPostsModule.recentDiscussionsChecker=async() => {
-  await requestRecentDiscussions(process.env.GERY_URI_DISCUSSIONS);
+  await requestRecentDiscussions(process.env.GERY_URI_DISCUSSIONS,  process.env.GERY_DISCUSSIONS_BUMP, process.env.GERY_FEAT, process.env.GERY_MY_DISCUSSION_ID);
+  await requestRecentDiscussions(process.env.ITRADERS_URI_DISCUSSIONS,  process.env.ITRADERS_DISCUSSIONS_BUMP, process.env.ITRADERS_FEAT, process.env.ITRADERS_MY_DISCUSSION_ID);
+  await requestRecentDiscussions(process.env.CSTRAD_URI_DISCUSSIONS, process.env.CSTRAD_DISCUSSIONS_BUMP, process.env.CSTRAD_FEAT, process.env.CSTRAD_MY_DISCUSSION_ID);
+  await requestRecentDiscussions(process.env.CSLOUNGE_URI_DISCUSSIONS, process.env.CSLOUNGE_DISCUSSIONS_BUMP, process.env.CSLOUNGE_FEAT, process.env.CSLOUNGE_MY_DISCUSSION_ID);
+  await requestRecentDiscussions(process.env.CSTRADERS_URI_DISCUSSIONS, process.env.CSTRADERS_DISCUSSIONS_BUMP, process.env.CSTRADERS_FEAT, process.env.CSTRADERS_MY_DISCUSSION_ID);
+  await requestRecentDiscussions(process.env.FREETRADE_URI_DISCUSSIONS, process.env.FREETRADE_DISCUSSIONS_BUMP, process.env.FREETRADE_FEAT, process.env.FREETRADE_MY_DISCUSSION_ID);
+
 }
 
 module.exports = checkingDiscussionsPostsModule;
