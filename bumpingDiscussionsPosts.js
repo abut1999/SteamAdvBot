@@ -23,7 +23,7 @@ async function bumpDiscussionsPost(bumpingUri, featureID) {
   await removeComment(bumpingUri, featureID);
   const doBump = await fetch(bumpingUri, {
     method: 'post',
-    body: `comment=Bump, ready for trades&count=15&sessionid=${process.env.CONN_SESID}&extended_data=${process.env.EXTENDED_DATA}&feature2=${featureID}oldestfirst=true&include_raw=true`,
+    body: `comment=${process.env.BUMP_COMMENT}&count=15&sessionid=${process.env.CONN_SESID}&extended_data=${process.env.EXTENDED_DATA}&feature2=${featureID}oldestfirst=true&include_raw=true`,
     headers: {
     	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       'accept': 'text/javascript, text/html, application/xml, text/xml, */*',
