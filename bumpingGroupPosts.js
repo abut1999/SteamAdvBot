@@ -4,6 +4,7 @@ require('dotenv').config();
 const bumpingGroupPostsModule = {};
 
 async function commentOnTargetGroup(targetedGroup) {
+  console.log(`bumping ${targetedGroup}`);
   await fetch(targetedGroup, {
     method: 'post',
     body: `comment=${process.env.GROUP_COMMENT}&count=6&sessionid=${process.env.CONN_SESID}&feature2=-1`,

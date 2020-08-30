@@ -1,4 +1,3 @@
-const request = require('request-promise');
 const fetch = require('node-fetch');
 const fs = require('fs');
 require('dotenv').config();

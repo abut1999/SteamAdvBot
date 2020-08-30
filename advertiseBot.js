@@ -1,12 +1,15 @@
 const checkingDiscussionsPostsModule = require('./checkingPostsInDiscussions')
-const checkingGroupCommentsModule = require ('./checkingGroupsComments')
+const checkingGroupCommentsModule = require ('./checkingGroupsComments');
+const creatingThreadModule = require('./creatingThreadInGlobal');
 
-async function main() {
-  checkingGroupCommentsModule.groupCommentsChecker();
-  checkingDiscussionsPostsModule.recentDiscussionsChecker();
-  setInterval(function(){
-  main();
-}, 720000)
+function main() {
+  function initiateFunctions() {
+    checkingGroupCommentsModule.groupCommentsChecker();
+    checkingDiscussionsPostsModule.recentDiscussionsChecker();
+  }
+  initiateFunctions();
+  setInterval(initiateFunctions, 1800*1000);
+  setInterval(creatingThreadModule.initiateThreadCreating, 3610*1000);
 }
 
 main();

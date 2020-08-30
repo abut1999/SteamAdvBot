@@ -27,6 +27,7 @@ async function requestRecentComments(targetUri, targetedGroupBumpUri) {
   const recentCommentsHTML = await request(requestHeader);
   const checkingOutcome = checkingGroupComments(recentCommentsHTML)
   const returner = ((checkingOutcome.includes(process.env.CREATOR)) === true) ? "Already in the top" : bumpingGroupPostsModule.initiateBumpingGroupPosts(targetedGroupBumpUri);
+  console.log(returner);
   await new Promise(resolve => setTimeout(resolve, 12000));
 }
 
@@ -36,6 +37,8 @@ postingGroupCommentModule.groupCommentsChecker=async() => {
   await requestRecentComments(process.env.CSTRAD_URI, process.env.CSTRAD_URI_BUMP_GROUP);
   await requestRecentComments(process.env.CSLOUNGE_URI, process.env.CSLOUNGE_URI_BUMP_GROUP);
   await requestRecentComments(process.env.FREETRADE_URI, process.env.FREETRADE_URI_BUMP_GROUP);
+  await requestRecentComments(process.env.CSGO_URI, process.env.CSGO_URI_BUMP_GROUP);
+  await requestRecentComments(process.env.TRADECENTER_URI, process.env.TRADECENTER_URI_BUMP_GROUP);
 }
 
 module.exports = postingGroupCommentModule;
