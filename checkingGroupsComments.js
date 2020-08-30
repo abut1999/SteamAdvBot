@@ -27,7 +27,6 @@ async function requestRecentComments(targetUri, targetedGroupBumpUri) {
   const recentCommentsHTML = await request(requestHeader);
   const checkingOutcome = checkingGroupComments(recentCommentsHTML)
   const returner = ((checkingOutcome.includes(process.env.CREATOR)) === true) ? "Already in the top" : bumpingGroupPostsModule.initiateBumpingGroupPosts(targetedGroupBumpUri);
-  console.log(returner);
   await new Promise(resolve => setTimeout(resolve, 12000));
 }
 

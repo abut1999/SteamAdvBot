@@ -22,7 +22,6 @@ async function requestRecentDiscussions(targetUri, bumpingUri, featureID, myDisc
   const recentDiscussionsHTML = await request(requestHeader);
   const checkingOutcome = checkingMyDiscussionPosition(recentDiscussionsHTML, myDiscussionID)
   if (checkingOutcome === undefined) {
-    console.log(`Bumping post ${targetUri}`);
     bumpingPostsModule.initiateBumpingPosts(bumpingUri, featureID)
   }
   await new Promise(resolve => setTimeout(resolve, 14000));
